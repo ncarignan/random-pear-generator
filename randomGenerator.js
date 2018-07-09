@@ -32,10 +32,16 @@ function pairer(event, tries = 0) {
   let resultString = '';
   let tempNameList = [...nameList];
   while(tempNameList.length){
-    
-    let a = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
-    let b = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
-    result.push([a, b]);
+    if(!(tempNameList.length - 1)){
+      let a = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
+      result[result.length - 1].push(a);
+      console.log(result);
+    }else {
+      let a = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
+      let b = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
+      result.push([a, b]);
+    }
+
   }
   
   let allNewPairs = true;
@@ -43,7 +49,7 @@ function pairer(event, tries = 0) {
     if(pair[0].previousPartners.includes(pair[1].name)){
       allNewPairs = false;
     }
-    resultString += `${pair[0].name} and ${pair[1].name} <br>`;
+    resultString += `${pair[0].name} and ${pair[1].name} ${pair[2] ? ' and ' + pair[2].name : ''}<br>`;
   });
   if(!allNewPairs) return pairer(nameList, tries + 1);
   else{
