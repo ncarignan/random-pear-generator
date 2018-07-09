@@ -5,12 +5,14 @@ const studentForm = document.getElementById('student-form');
 const output = document.getElementById('output');
 const generatePears = document.getElementById('generate-pears');
 const savePears = document.getElementById('save-pears');
+const resetPears = document.getElementById('reset-pears');
 let resultPears = [];
 
 
 studentForm.addEventListener('submit', handleStudentFormSubmit);
 generatePears.addEventListener('click', pairer);
 savePears.addEventListener('click', handleSavePears);
+resetPears.addEventListener('click', handleResetPears);
 
 function Student(name) {
   this.name = name;
@@ -71,6 +73,10 @@ function handleSavePears(){
   });
 }
 
-// pairer(nameList);
+function handleResetPears() {
+  nameList.map(student => student.previousPartners = []);
+  localStorage.setItem('nameList', JSON.stringify(nameList));
+}
+
 
 
