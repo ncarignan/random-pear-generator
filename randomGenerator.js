@@ -5,6 +5,8 @@ const studentForm = document.getElementById('student-form');
 const output = document.getElementById('output');
 const generatePears = document.getElementById('generate-pears');
 const savePears = document.getElementById('save-pears');
+let resultPears = [];
+
 
 studentForm.addEventListener('submit', handleStudentFormSubmit);
 generatePears.addEventListener('click', pairer);
@@ -28,24 +30,24 @@ function handleStudentFormSubmit(event) {
 }
 
 function pairer(event, tries = 0) {
-  let result = [];
+  resultPears = [];
   let resultString = '';
   let tempNameList = [...nameList];
   while(tempNameList.length){
     if(!(tempNameList.length - 1)){
       let a = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
-      result[result.length - 1].push(a);
-      console.log(result);
+      resultPears[resultPears.length - 1].push(a);
+      console.log(resultPears);
     }else {
       let a = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
       let b = tempNameList.splice(Math.floor(Math.random() * tempNameList.length), 1)[0];
-      result.push([a, b]);
+      resultPears.push([a, b]);
     }
 
   }
   
   let allNewPairs = true;
-  result.forEach(pair => {
+  resultPears.forEach(pair => {
     if(pair[0].previousPartners.includes(pair[1].name)){
       allNewPairs = false;
     }
@@ -53,10 +55,7 @@ function pairer(event, tries = 0) {
   });
   if(!allNewPairs) return pairer(nameList, tries + 1);
   else{
-    result.forEach(pair => {
-      pair[0].previousPartners.push(pair[1].name);
-      pair[1].previousPartners.push(pair[0].name);
-    });
+    
     output.innerHTML = resultString;
     console.log(`took ${tries} tries`);
     return;
@@ -66,6 +65,10 @@ function pairer(event, tries = 0) {
 
 function handleSavePears(){
   localStorage.setItem('nameList', JSON.stringify(nameList));
+  resultPears.forEach(pair => {
+    pair[0].previousPartners.push(pair[1].name);
+    pair[1].previousPartners.push(pair[0].name);
+  });
 }
 
 // pairer(nameList);
