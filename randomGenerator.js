@@ -1,11 +1,12 @@
 'use strict';
 
-const nameList = localStorage.getItem('nameList') ? JSON.parse(localStorage.getItem('nameList')) : [];
+let nameList = localStorage.getItem('nameList') ? JSON.parse(localStorage.getItem('nameList')) : [];
 const studentForm = document.getElementById('student-form');
 const output = document.getElementById('output');
 const generatePears = document.getElementById('generate-pears');
 const savePears = document.getElementById('save-pears');
 const resetPears = document.getElementById('reset-pears');
+const deleteStudents = document.getElementById('delete-students');
 let resultPears = [];
 
 
@@ -13,6 +14,7 @@ studentForm.addEventListener('submit', handleStudentFormSubmit);
 generatePears.addEventListener('click', pairer);
 savePears.addEventListener('click', handleSavePears);
 resetPears.addEventListener('click', handleResetPears);
+deleteStudents.addEventListener('click', handleDeleteStudents);
 
 function Student(name) {
   this.name = name;
@@ -24,7 +26,7 @@ function handleStudentFormSubmit(event) {
   event.preventDefault();
   
   let students = event.target.students.value.split(',').map(student => student.trim());
-  students.forEach(student => new Student(student));
+  students.forEach(student => student ? new Student(student) : null);
   
   event.target.students.value = '';
   
@@ -76,6 +78,11 @@ function handleSavePears(){
 function handleResetPears() {
   nameList.map(student => student.previousPartners = []);
   localStorage.setItem('nameList', JSON.stringify(nameList));
+}
+
+function handleDeleteStudents() {
+  nameList = [];
+  localStorage.setItem('nameList', null);
 }
 
 
