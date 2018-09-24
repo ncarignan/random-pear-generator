@@ -1,0 +1,15 @@
+pair {
+  float: left;
+  // width: 100px;
+  border: solid black 1px;
+  margin: 3px;
+  padding: 3px;
+  border-radius: 5px;
+}
+pair *{
+display: inline-block;
+}
+
+.pair p{
+  margin: 3px 10px 3px 0;
+}

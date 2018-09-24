@@ -5,6 +5,7 @@ class StudentForm extends React.Component {
     super(props);
     this.state = {
       name : '',
+      pastPairs:[],
     };
   }
 
@@ -20,7 +21,7 @@ class StudentForm extends React.Component {
 
   render(){
     return(
-      <form className='expense-form' onSubmit={this.handleSubmit}>
+      <form className='student-form' onSubmit={this.handleSubmit}>
         <input
           type='text'
           name='name'

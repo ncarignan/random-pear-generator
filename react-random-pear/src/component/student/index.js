@@ -2,7 +2,7 @@ import React from 'react';
 
 import './student.scss';
 
-class StudentContainer extends React.Component {
+class Student extends React.Component {
   
   render() {
     return(
@@ -20,4 +20,4 @@ class StudentContainer extends React.Component {
   
 }
 
-export default StudentContainer;
+export default Student;
