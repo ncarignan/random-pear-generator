@@ -64,7 +64,8 @@
     "semi": [
       "error",
       "always"
-    ]
+    ],
+    "arrow-body-style": ["error", "as-needed"]
   },
   "plugins": [
     "react"
