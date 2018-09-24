@@ -8,15 +8,17 @@ class StudentContainer extends React.Component {
   render() {
     return(
       <section>
-        <ul>
-          {this.props.students.map((student, index) => 
-            <Student 
-              name={student.name} 
-              key={index} 
-              handleRemoveStudent={this.props.handleRemoveStudent}
-            />
-          )}
-        </ul>
+        
+        {this.props.students.map((student, index) => 
+          <Student 
+            name={student.name} 
+            key={index} 
+            index={index}
+            handleRemoveStudent={this.props.handleRemoveStudent}
+            handleChangeStudentFocus={this.props.handleChangeStudentFocus}
+          />
+        )}
+        
       </section>
     );
   }

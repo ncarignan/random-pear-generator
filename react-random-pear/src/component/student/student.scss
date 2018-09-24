@@ -1,0 +1,15 @@
+.student {
+  float: left;
+  // width: 100px;
+  border: solid black 1px;
+  margin: 3px;
+  padding: 3px;
+  border-radius: 5px;
+}
+.student *{
+display: inline-block;
+}
+
+.student p{
+  margin: 3px 10px 3px 0;
+}

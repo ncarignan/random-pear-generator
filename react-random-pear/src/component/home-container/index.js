@@ -10,6 +10,8 @@ class HomeContainer extends React.Component {
 
     this.state = {
       students: localStorage.getItem('students') ? JSON.parse(localStorage.getItem('students')) : [],
+      studentFocus: false,
+      pairings: false      
     };
   }
 
@@ -30,15 +32,24 @@ class HomeContainer extends React.Component {
     localStorage.setItem('students', JSON.stringify(tempStudents));
   }
 
+  handleChangeStudentFocus = event => {
+    if(event.target.className !== "remove-student"){
+      console.log(event.target, event.target.className, event.target.dataset.key);
+      this.setState({studentFocus: this.state.students[event.target.dataset.key]})
+    }
+    
+  }
+
   render() {
     return(
       <section>
         <StudentContainer 
           students={this.state.students} 
           handleRemoveStudent={this.handleRemoveStudent}
+          handleChangeStudentFocus={this.handleChangeStudentFocus}
           />
         <StudentForm handleAddStudent={this.handleAddStudent}/>
-        <RandomPairSection students={this.state.students}/>
+        {/* <RandomPairSection students={this.state.students}/> */}
       </section>
     );
   }
