@@ -43,66 +43,65 @@ class HomeContainer extends React.Component {
   }
     
   handleCreatePairs = () => {
+    let result = this._handleCreatePairs(); // returns an array of [pairs, students]
     console.log(this.state.students);
-    let result = this._handleCreatePairs(this.state.students); // returns an array of [pairs, students]
     if(result) {
       this.setState({pairings:result[0], students: result[1]});
       localStorage.setItem('students', JSON.stringify(result[1]));
+      console.log(result[2]);
     } else {
-      alert('there are no more unique combinations')
+      console.log('there are no more unique combinations') //TODO: Alert the user
     }
   }
 
-  _handleCreatePairs = (students, tries=0, projectName) => {
+  _handleCreatePairs = (tries=0, projectName) => {
     let resultPairs = [];
     let resultStudents = [];
-    let tempStudents = [...students];
+    let tempStudents = JSON.parse(JSON.stringify(this.state.students));;
     projectName = projectName ? projectName : new Date().getUTCMonth() + ' ' + new Date().getDay();
 
     while (tempStudents.length) {
       if (!(tempStudents.length - 1)) {
-        let a = tempStudents.splice(Math.floor(Math.random() * tempStudents.length), 1)[0];
-        resultPairs[resultPairs.length - 1].push(a.name);
-        // resultStudents
+        let a = tempStudents.splice(0, 1)[0];
+        let b = resultPairs[resultPairs.length - 1][0];
+        let c = resultPairs[resultPairs.length - 1][1];
+        resultPairs[resultPairs.length - 1].push(a);
+        
+        a.pastPairs.push({ projectName: projectName, partners: [b.name, c.name] })
+        b.pastPairs[b.pastPairs.length -1] = { projectName: projectName, partners: [a.name, c.name] };
+        c.pastPairs.push({ projectName: projectName, partners: [a.name, c.name]})
         resultStudents.push(a);
       } else {
         let aToSplice = Math.floor(Math.random() * tempStudents.length);
-        // debugger;
-        // console.log(tempStudents.splice(aToSplice, 1)[0])
         let a = tempStudents.splice(aToSplice, 1)[0];
-        debugger;
         let b = tempStudents.splice(Math.floor(Math.random() * tempStudents.length), 1)[0];
         resultPairs.push([a, b]);
-        debugger;
-        a.pastPairs.push({ projectName: projectName, partner: b.name })
-        debugger;
-        b.pastPairs.push({projectName: projectName, partner: a.name})
+        a.pastPairs.push({ projectName: projectName, partners: [b.name] })
+        b.pastPairs.push({projectName: projectName, partners: [a.name]})
         resultStudents.push(a, b);
       }
     }
 
     let allNewPairs = true;
     resultPairs.forEach(pair => {
-      for(let i = 0; i < pair[0].pastPairs.length - 1; i++){
-        debugger;
-        if(pair[0].pastPairs[i].partner === pair[1].name){
-          allNewPairs = false
-        }
+      for(let i = 0; i < pair.length; i++){ // check all pair members
+        for(let j = 0; j < pair[i].pastPairs.length - 1; j++){ // check all past pairs for each member
+          for(let k = i; k < pair.length; k++){// check against the name of the other partners
+            if(pair[i].pastPairs[j].partners[0] === pair[k].name){
+              // debugger;
+              allNewPairs = false
+            }
+          }
+        } 
       }
     });
-    if (!allNewPairs){
-      debugger;
-      students.forEach(student => {
-        student.pastPairs.pop();
-      })
-      return this._handleCreatePairs(students, tries + 1, projectName);
-    } 
-    else if(tries === 100){
-      console.log('infinite loop reached');
+    if(tries > 3000){
       return null;
-    }
+    } else if (!allNewPairs){
+      return this._handleCreatePairs(tries + 1, projectName);
+    } 
     else {
-      return [resultPairs, this._sortStudents(resultStudents)];
+      return [resultPairs, this._sortStudents(resultStudents), tries];
     }
   }
 
